@@ -8,22 +8,14 @@ export default class Card {
     console.log("Entering Card Constructor")
     const template_obj = document.getElementsByClassName("template card");  // ??? const or let best here? // document.querySelector(".template card") ??
     let clone = template_obj[0].cloneNode(true); // If true, then the node and its whole subtree, including text that may be in child Text nodes, is also copied.
-    // clone.className = "cl";
-    // console.log("------clone.className-----")
-    // console.log(clone.className)
+
     clone.className = "card"; // ! need to fix this for the className
     clone.style.backgroundColor = color;  // ! this allowed? bc above wouldnt work right
     clone.childNodes[1].innerText = title; // ??? should this go here or somehwere else? better way to do this?
     this.title = title;
     this.color = color;
     this.htmlClone = clone;
-
-    console.log("this.htmlClone = ");
-    console.log(this.htmlClone)
-    console.log("this.htmlClone.childNodes = ");
-    console.log(this.htmlClone.childNodes);
-    console.log("this.htmlClone.childNodes[3] = ");
-    console.log(this.htmlClone.childNodes[3]);
+    //this.prevCard = undefined;
 
     // get card buttons
     const editButton = this.htmlClone.childNodes[7].childNodes[1];  // ! ??? is it bad that im using the child nodes much for accessing the template components
@@ -32,6 +24,7 @@ export default class Card {
     
 
     const deleteCard = (event) => {   // ?? is there a way to make this a member function that would be better? Are all event listeners & handlers supposed to be in constructor (seems cluttered)? 
+      this.mover.stopMoving();  // when delete a card, don't want to be moving
       console.log("--entering deleteCard--");
       this.htmlClone.remove();
       delete this;
@@ -44,29 +37,36 @@ export default class Card {
       textArea.className = "editDescription hidden";
       this.htmlClone.childNodes[3].className = "description";
     }
+
+    const dragCard = (event) => {
+      // if (this.prevCard !== this) {
+      //   this.prevCard = this;
+      //   console.log("SWITCH!!!!!!!!");
+      //   console.log(this.prevCard);
+      // }
+      console.log("DRAGGING");
+
+    }
+
+    // ??? does spacing (2 spaces v 4 spaces) matter for tabs?
     
     
     editButton.addEventListener("click", (event) => { this.editCard(textArea); }); // this a good way to set this up?
     textArea.addEventListener("blur", fillDescription);
+    // textArea.addEventListener("click", fillDescription); // !!! REPLACE W ABOVE AFTER CSS
     deleteButton.addEventListener("click", deleteCard); // ??? what is the benefit to having this as a member fxn like above or not like here
     startMoveButton.addEventListener("click", (event) => { this.mover.startMoving(this); });  // ??? why does it strike thru event when i start writing it? is this method deprecated?
+    console.log("LOOK HERE !!!!! this.htmlClone");
+    console.log(this.htmlClone);
     
+    this.htmlClone.addEventListener("dragstart", dragCard);
 
   }
 
   addToCol(colElem, mover) {
     console.log("entering addToCol");
-    // console.log("colElem = ");
-    // console.log(colElem);
-    // console.log(colElem.childNodes);
     colElem.appendChild(this.htmlClone);
     this.mover = mover;   // ! storing for later use
-    // console.log("LOOK HERE!!!!!!!")
-    // console.log(this)
-    // console.log(this.mover);
-    // console.log("colElem = ");
-    // console.log(colElem);
-    // console.log(colElem.childNodes);
 
   }
 

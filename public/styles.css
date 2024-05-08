@@ -10,9 +10,56 @@
   display: none;
 }
 
+input, button {
+  font-size: normal;
+}
+
+textarea {
+  font-size: normal;
+  /* font-family: Times, 'Times New Roman', serif; ??? This the right default font family? */
+  font-family: inherit; /* ??? This the right default font family? */
+  background-color: inherit;
+}
+
+.moving {
+  border: 2px solid black;
+}
+
+.editDescription {
+  width: 100%;
+  height: 5em;
+  /* white-space: pre; */
+}
+
+.description {
+  white-space: pre-wrap;
+}
+
+/* .edit, .startMove, .delete, .moveHere {
+  background-color: inherit;
+  border-width: 0px;
+} */
+
+article > .buttons > button, .moveHere { /* is this better than above?*/
+  background-color: inherit;
+  border-width: 0px;
+}
+
+article > .buttons > button:hover, .moveHere:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.moveHere:hover {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.moveHere {
+  font-size: small;
+  color: gray;
+}
+
 /* .card {
   color: black;
 } */
-
-
-/*TODO*/

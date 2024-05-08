@@ -11,32 +11,26 @@ export default class App {
     
     const addCardEvent = (event) => {   // ??? is this needed or could it just have been a call to addCard (ie could i get rid of addCardEvent?)
       console.log("--entering event handler--")
-      console.log("MY INPUTS: ");
+
       const titleInput = document.getElementById("cardTitle");
       const colorInput = document.getElementById("cardColor");
-      console.log(titleInput.value);
-      console.log(colorInput.value);
-      // const titVal = titleInput.value;
-      // const colVal = colorInput.value;
+
       this.addCard("todo", titleInput.value, colorInput.value); // defaulted to add to "todo" section
       document.getElementById("addCard").reset();
       event.preventDefault();
     }
 
-    //document.getElementById("addButton").addEventListener("click", addCardEvent.bind(this));  // bind this to make addCard is accessible
-    //document.getElementById("addButton").addEventListener("click", addCardEvent);  // make anonymous fxn so that this is binded to class and not fxn
     document.getElementById("addCard").addEventListener("submit", addCardEvent);  // handle it as a form submit, not a button click for validation reasons
-    // console.log("LOOK HERE!!!!!!!");
-    // console.log(this);
+
   }
 
   addCard(col, title, color) {
     console.log("--entering addCard--");
-    // (1) duplicate template card defined at end of HTML --> done in card
+    this.mover.stopMoving();
 
     // (2) Set the card's title and color as passed in. Title will never be empty. Must use a HTML5 color picker.
     const card = new Card(title, color);
-    // this.mover.m_card = card;    
+
     // (3) The empty description in the card should by default say "(No description)".
     card.setDescription(""); // ??? should we call this here or in the card constructor
     
