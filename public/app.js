@@ -6,8 +6,10 @@ import Mover from "./mover.js";
 export default class App {
   constructor() {
     console.log("enter App constructor")
+
+    this.mover = new Mover();
     
-    const addCardEvent = (event) => {
+    const addCardEvent = (event) => {   // ??? is this needed or could it just have been a call to addCard (ie could i get rid of addCardEvent?)
       console.log("--entering event handler--")
       console.log("MY INPUTS: ");
       const titleInput = document.getElementById("cardTitle");
@@ -21,32 +23,30 @@ export default class App {
       event.preventDefault();
     }
 
-    // const submitForm = (event) => { event.preventDefault(); }
-    
     //document.getElementById("addButton").addEventListener("click", addCardEvent.bind(this));  // bind this to make addCard is accessible
     //document.getElementById("addButton").addEventListener("click", addCardEvent);  // make anonymous fxn so that this is binded to class and not fxn
     document.getElementById("addCard").addEventListener("submit", addCardEvent);  // handle it as a form submit, not a button click for validation reasons
-    
+    // console.log("LOOK HERE!!!!!!!");
+    // console.log(this);
   }
 
   addCard(col, title, color) {
-    //TODO
     console.log("--entering addCard--");
     // (1) duplicate template card defined at end of HTML --> done in card
 
     // (2) Set the card's title and color as passed in. Title will never be empty. Must use a HTML5 color picker.
-    const newCard = new Card(title, color);
-    
+    const card = new Card(title, color);
+    // this.mover.m_card = card;    
     // (3) The empty description in the card should by default say "(No description)".
-    newCard.setDescription(""); // ??? should we call this here or in the card constructor
+    card.setDescription(""); // ??? should we call this here or in the card constructor
     
     // (4) The card is added to the bottom of the column --> call addToCol(colElem, mover)
     const colElem = document.getElementById(col);
-    newCard.addToCol(colElem, null); // For now, you can ignore the mover argument (pass null when calling it)
+    card.addToCol(colElem, this.mover); // For now, you can ignore the mover argument (pass null when calling it)
     
-    console.log("newCard is ")
-    console.log(newCard)
-    return newCard;
+    console.log("card is ")
+    console.log(card)
+    return card;
   }
 
   //TODO
