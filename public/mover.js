@@ -48,9 +48,10 @@ export default class Mover {
 
   stopMoving(event) { // ?? best to pass in event here?
     // event.currentTarget.insertAdjacentElement("afterend", card.htmlClone); // this refers to the button, not the class
-    
-    if (event !== undefined) {
+    if (this.card !== undefined) {
       this.card.htmlClone.className = "card";
+    }
+    if (event !== undefined) {
       event.currentTarget.after(this.card.htmlClone); // ! ??? does this cause an issue when we call stopMoving even when we are not currently moving?
     }
     const moveHereButtons = document.getElementsByClassName("moveHere");
