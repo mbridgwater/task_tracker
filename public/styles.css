@@ -20,7 +20,6 @@ body {
 
 textarea {
   font-size: normal;
-  /* font-family: Times, 'Times New Roman', serif; ??? This the right default font family? */
   font-family: inherit; /* ??? This the right default font family? */
   background-color: inherit;
 }
@@ -32,19 +31,13 @@ textarea {
 .editDescription {
   width: 100%;
   height: 5em;
-  /* white-space: pre; */
 }
 
 .description {
   white-space: pre-wrap;
 }
 
-/* .edit, .startMove, .delete, .moveHere {
-  background-color: inherit;
-  border-width: 0px;
-} */
-
-article > .buttons > button, .moveHere { /* is this better than above?*/
+article > .buttons > button, .moveHere {
   background-color: inherit;
   border-width: 0px;
 }
