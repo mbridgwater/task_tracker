@@ -1,4 +1,4 @@
 Lauren Bridgwater
 905759596
  
-(Anything else you need us to know. In particular if you did any of the extra credit, please describe it here)
+I did not implement the extra credit, but may if I have time prior to the last due date (with my extra days). Otherwise, everything should run as expected.
