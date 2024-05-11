@@ -1,5 +1,6 @@
 import Card from "./card.js";
 import Mover from "./mover.js";
+import ImportTextFile from "./drop_file.js"
 
 export default class App {
   constructor() {
@@ -27,6 +28,8 @@ export default class App {
     const colElem = document.getElementById(col);
     card.addToCol(colElem, this.mover); // For now, you can ignore the mover argument (pass null when calling it)
     
+    new ImportTextFile(card);
+
     return card;
   }
 
