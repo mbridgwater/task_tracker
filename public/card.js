@@ -10,9 +10,34 @@ export default class Card {
 
     clone.className = "card"; // ! need to fix this for the className
     clone.style.backgroundColor = color;
+    console.log("clone");
+    console.log(clone);
+    // const rgb_color = window.getComputedStyle(clone);
+    // const rgb_color = rgb(from color 255 255 255)
+    // if ((red*0.299 + green*0.587 + blue*0.114) > 186) use #000000 else use #ffffff;
+    /* break color into its rgb */
+    // console.log(rgb_color);
+    // console.log(`rgb_color: ${rgb_color}, color: ${color}`);
+    // const hexColor = this.getHexColor(rgb_color);
+    const hexColor = color;
+    /* detect how dark the color is */
+    const r = parseInt(hexColor.substr(1,2), 16);
+    const g = parseInt(hexColor.substr(3,2), 16);
+    const b = parseInt(hexColor.substr(5,2), 16);
+    console.log(`r=${r}. g=${g}, b=${b}`);
+    console.log("(r*0.299 + g*0.587 + b*0.114) is", (r*0.299 + g*0.587 + b*0.114));
+    if ((r*0.299 + g*0.587 + b*0.114) <= 186) { 
+      // clone.style.color = '#ffffff';
+      clone.className = "card white-color";
+      const imgList = clone.getElementsByTagName("img");
+      console.log("imgList is ", imgList)
+      for (let i = 0; i < imgList.length; i++) {
+        clone.getElementsByTagName("img")[i].className = "white-filter";
+      }
+    }
     clone.getElementsByClassName("title")[0].innerText = title; // ??? should this go here or somehwere else? better way to do this?
     this.title = title;
-    this.color = color;
+    this.color = hexColor;
     this.htmlClone = clone;
 
     // get card buttons
@@ -21,7 +46,8 @@ export default class Card {
     const deleteButton = this.htmlClone.getElementsByClassName("delete")[0];
     
 
-    const deleteCard = (event) => {   // ?? is there a way to make this a member function that would be better? Are all event listeners & handlers supposed to be in constructor (seems cluttered)? 
+    const deleteCard = () => {   // ?? is there a way to make this a member function that would be better? Are all event listeners & handlers supposed to be in constructor (seems cluttered)? 
+            /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
       this.mover.stopMoving();  // when delete a card, don't want to be moving
       this.htmlClone.remove();
       delete this;
@@ -29,7 +55,7 @@ export default class Card {
 
     let textArea = this.htmlClone.getElementsByTagName("textarea")[0];
 
-    const fillDescription = (event) => {
+    const fillDescription = () => { /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
       this.setDescription(textArea.value);
       textArea.className = "editDescription hidden";
       this.htmlClone.getElementsByClassName("description hidden")[0].className = "description";
@@ -39,11 +65,11 @@ export default class Card {
     //   console.log("DRAGGING");
     // }
 
-    editButton.addEventListener("click", (event) => { this.editCard(textArea); }); // this a good way to set this up?
+    editButton.addEventListener("click", () => { this.editCard(textArea); }); // this a good way to set this up? /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
     textArea.addEventListener("blur", fillDescription);
     deleteButton.addEventListener("click", deleteCard); // ??? what is the benefit to having this as a member fxn like above or not like here
-    startMoveButton.addEventListener("click", (event) => { this.mover.startMoving(this); });  // ??? why does it strike thru event when i start writing it? is this method deprecated?
-    
+    startMoveButton.addEventListener("click", () => { this.mover.startMoving(this); });  // ??? why does it strike thru event when i start writing it? is this method deprecated?
+    /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it ^^ */
     // this.htmlClone.addEventListener("dragstart", dragCard);
   }
 
@@ -74,4 +100,20 @@ export default class Card {
       editDescriptionBox.innerText = text; // set default for edit text box to current description
     }
   }
+
+  getHexColor(rgb_color) {
+    if (rgb_color.substr(0, 1) === '#') {
+        return rgb_color;
+    }
+    const digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(rgb_color);
+    
+    const red = parseInt(digits[2]);
+    const green = parseInt(digits[3]);
+    const blue = parseInt(digits[4]);
+    
+    const rgb = blue | (green << 8) | (red << 16);
+    return digits[1] + '#' + rgb.toString(16).padStart(6, '0');
+  }
 }
+
+
