@@ -1,5 +1,6 @@
 /* The text to use when description is empty */
 const NO_DESCRIPTION_TEXT = "(No description)";
+import colorNameToHex from "./getColorHex.js"
 
 // ! ??? Should every function have a return in JS?
 
@@ -19,15 +20,14 @@ export default class Card {
     // console.log(rgb_color);
     // console.log(`rgb_color: ${rgb_color}, color: ${color}`);
     // const hexColor = this.getHexColor(rgb_color);
-    const hexColor = color;
+    const hexColor = colorNameToHex(color); // takes a hex color or predefined css color and converts to hex
     /* detect how dark the color is */
     const r = parseInt(hexColor.substr(1,2), 16);
     const g = parseInt(hexColor.substr(3,2), 16);
     const b = parseInt(hexColor.substr(5,2), 16);
     console.log(`r=${r}. g=${g}, b=${b}`);
-    console.log("(r*0.299 + g*0.587 + b*0.114) is", (r*0.299 + g*0.587 + b*0.114));
-    if ((r*0.299 + g*0.587 + b*0.114) <= 186) { 
-      // clone.style.color = '#ffffff';
+
+    if ((r*0.299 + g*0.587 + b*0.114) <= 128) {   // source: https://en.wikipedia.org/wiki/Relative_luminance
       clone.className = "card white-color";
       const imgList = clone.getElementsByTagName("img");
       console.log("imgList is ", imgList)
