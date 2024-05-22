@@ -28,7 +28,8 @@ export default class Card {
     console.log(`r=${r}. g=${g}, b=${b}`);
 
     if ((r*0.299 + g*0.587 + b*0.114) <= 128) {   // source: https://en.wikipedia.org/wiki/Relative_luminance
-      clone.className = "card white-color";
+      // clone.className = "card white-color";  // don't do this way bc makes things difficult/buggy later when resetting class names
+      clone.style.color = "white";
       const imgList = clone.getElementsByTagName("img");
       console.log("imgList is ", imgList)
       for (let i = 0; i < imgList.length; i++) {

@@ -1,3 +1,13 @@
+[data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-fg: #000000;
+  }
+  
+  [data-theme="dark"] {
+    --color-bg: #000000;
+    --color-fg: #ffffff;
+  }
+
 body {
     font-family: "Roboto", "Montserrat", sans-serif;    /* ??? should i specify another? is applying to html fine? */
     margin: 0px;
@@ -83,8 +93,11 @@ h1 {
     border-radius: 0.5rem;
     padding: 0.5rem;
     position: relative;
-    /* display:inline-block;  */
-    
+    /* display:inline-block;  */   
+}
+
+.editDescription {
+    color: inherit; /* need this to ensure the correct white or black font used */
 }
 
 h3 {
