@@ -1,17 +1,25 @@
 [data-theme="light"] {
     --color-bg: #ffffff;
     --color-fg: #000000;
-  }
-  
-  [data-theme="dark"] {
-    --color-bg: #000000;
+}
+
+[data-theme="dark"] {
+    --color-bg: #636363;
     --color-fg: #ffffff;
-  }
+}
+
+/* .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+} */
+
 
 body {
     font-family: "Roboto", "Montserrat", sans-serif;    /* ??? should i specify another? is applying to html fine? */
     margin: 0px;
     height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    /* display: flow-root; */
 }
 
 header {
@@ -87,12 +95,15 @@ h1 {
 
 .columnTitle {
     margin: 1rem 1rem 0 1rem;
+    background-color: var(--color-bg);
+    color: var(--color-fg)
 }
 
 .card, .moving {
     border-radius: 0.5rem;
     padding: 0.5rem;
     position: relative;
+    color: black;
     /* display:inline-block;  */   
 }
 
@@ -123,19 +134,19 @@ button {
     fill: red;
 } */
 
-.white-color {
-    /* filter: invert(100%) sepia(100%) saturate(15%) hue-rotate(334deg) brightness(106%) contrast(103%); */
+/* .white-color {
+    // filter: invert(100%) sepia(100%) saturate(15%) hue-rotate(334deg) brightness(106%) contrast(103%); 
     color: white;
-}
+} */
 
 .white-filter {
     filter: invert(100%) sepia(100%) saturate(15%) hue-rotate(334deg) brightness(106%) contrast(103%);
 }
 
-svg {
+/* svg {
     fill: red;
     color: red;
-}
+} */
 
 .card:hover > .buttons {    /* when hover over a box, make its buttons appear */
     display: block; /* ??? block or inline-block better? */

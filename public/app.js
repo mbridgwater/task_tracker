@@ -1,11 +1,13 @@
 import Card from "./card.js";
 import Mover from "./mover.js";
 import ImportTextFile from "./drop_file.js"
+import LightDarkMode from "./light_dark_mode.js"
 
 export default class App {
   constructor() {
 
     this.mover = new Mover();
+    this.lightDarkMode = new LightDarkMode();
     
     const addCardEvent = (event) => {   // ??? is this needed or could it just have been a call to addCard (ie could i get rid of addCardEvent?)
       const titleInput = document.getElementById("cardTitle");
@@ -14,7 +16,9 @@ export default class App {
       document.getElementById("addCard").reset();
       event.preventDefault();
     }
+
     document.getElementById("addCard").addEventListener("submit", addCardEvent);  // handle it as a form submit, not a button click for validation reasons
+
   }
 
   /* addCard adds a new card to the task board by creating the card object and then calling card member functions */
@@ -22,6 +26,7 @@ export default class App {
     this.mover.stopMoving();
 
     const card = new Card(title, color);
+    
     card.setDescription(""); // ??? should we call this here or in the card constructor
     
     // (4) The card is added to the bottom of the todo column 
