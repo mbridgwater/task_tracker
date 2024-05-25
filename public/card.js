@@ -2,26 +2,13 @@
 const NO_DESCRIPTION_TEXT = "(No description)";
 import colorNameToHex from "./getColorHex.js"
 
-// ! ??? Should every function have a return in JS?
-
 export default class Card {
-  constructor(title, color) {
+  constructor(title, color, col) {
     const template_obj = document.getElementsByClassName("template card");
     let clone = template_obj[0].cloneNode(true); // If true, then the node and its whole subtree, including text that may be in child Text nodes, is also copied.
 
-    clone.className = "card"; // ! need to fix this for the className
+    clone.className = "card";
     clone.style.backgroundColor = color;
-    // console.log("clone");
-    // console.log(clone);
-    // const rgb_color = window.getComputedStyle(clone);
-    // const rgb_color = rgb(from color 255 255 255)
-    // if ((red*0.299 + green*0.587 + blue*0.114) > 186) use #000000 else use #ffffff;
-    /* break color into its rgb */
-    // console.log(rgb_color);
-    // console.log(`rgb_color: ${rgb_color}, color: ${color}`);
-    // const hexColor = this.getHexColor(rgb_color);
-    // console.log("COLOR IS")
-    // console.log(color);
     const hexColor = colorNameToHex(color); // takes a hex color or predefined css color and converts to hex
     /* detect how dark the color is */
     const r = parseInt(hexColor.substr(1,2), 16);
@@ -42,6 +29,8 @@ export default class Card {
     this.title = title;
     this.color = hexColor;
     this.htmlClone = clone;
+    this.id = `card${Date.now()}`;  // Unique ID
+    this.col = col;
 
     // get card buttons
     const editButton = this.htmlClone.getElementsByClassName("edit")[0];
@@ -74,6 +63,7 @@ export default class Card {
     startMoveButton.addEventListener("click", () => { this.mover.startMoving(this); });  // ??? why does it strike thru event when i start writing it? is this method deprecated?
     /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it ^^ */
     // this.htmlClone.addEventListener("dragstart", dragCard);
+    // console.log(this);
   }
 
   addToCol(colElem, mover) {

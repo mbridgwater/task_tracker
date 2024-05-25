@@ -35,18 +35,46 @@ export default class Mover {
     }
   }
 
+  // !! FIGURING OUT HOW TO SET this.col
+
   /* stopMoving alters the DOM and moves the selected card to the right stop or just cancels the move altogther */
   stopMoving(event) {
     if (this.card !== undefined) {
       this.card.htmlClone.className = "card";
     }
-    if (event !== undefined) {
+    if (event !== undefined && this.card !== undefined) {
       event.currentTarget.after(this.card.htmlClone); 
+      console.log("my event is", event);
+      console.log("my event.currentTarget.parentElement.id is ", event.currentTarget.parentElement.id);
+      this.card.col = event.currentTarget.parentElement.id; // make the column update with the column id marker
+      /* save update to local storage */
+      this.updateLocalStorage(this.card);
     }
+
+    /* remove move here buttons */
     const moveHereButtons = document.getElementsByClassName("moveHere");
     const len = moveHereButtons.length;
     for(let i = 0; i < len; i++) { 
       moveHereButtons[0].remove();
     }
+  }
+
+  updateLocalStorage(card) {
+    let cards = JSON.parse(window.localStorage.getItem('cards')) || [];  /* get cards that are already stored, shouldn't need || [] bc for stopMoving to be called, some cards must exist, but can add it as safegaurd */
+    const existingCardIndex = cards.findIndex(c => c.id === card.id); /* see if the card alr exists */
+    console.log(card);
+    console.log("CARDS - LOOK HERE", cards);
+
+    if (existingCardIndex !== -1) { 
+      // cards[existingCardIndex] = card;  // so that this makes the update for the column
+      cards[existingCardIndex].col = this.card.col;
+      console.log("cards[existingCardIndex].col", cards[existingCardIndex].col);
+    } 
+    else {
+      // WE SHOULD NEVER GO INTO THIS
+      console.log("THIS IS A PROBLEM, YOU SHOULD NOT BE ENTERING THIS!!!!!!")
+      // cards.push(card);
+    }
+    window.localStorage.setItem('cards', JSON.stringify(cards));
   }
 }

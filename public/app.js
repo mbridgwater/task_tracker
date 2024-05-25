@@ -12,6 +12,8 @@ export default class App {
     const addCardEvent = (event) => {   // ??? is this needed or could it just have been a call to addCard (ie could i get rid of addCardEvent?)
       const titleInput = document.getElementById("cardTitle");
       const colorInput = document.getElementById("cardColor");
+      // event.preventDefault(); // ??? HERE OR AT END???
+      
       this.addCard("todo", titleInput.value, colorInput.value); // defaulted to add to "todo" section
       document.getElementById("addCard").reset();
       event.preventDefault();
@@ -22,14 +24,17 @@ export default class App {
     // const card1Content = localStorage.setItem('itemName','stringContent');
     console.log("this IS: ");
     console.log(this);
-
+    // window.localStorage.removeItem("cards");   // TO REMOVE CARDS
+    const cards = JSON.parse(localStorage.getItem('cards')) || [];
+    this.displayCards(cards);
   }
 
   /* addCard adds a new card to the task board by creating the card object and then calling card member functions */
   addCard(col, title, color) {
+    console.log("ENTERING");
     this.mover.stopMoving();
 
-    const card = new Card(title, color);
+    const card = new Card(title, color, col);
     
     card.setDescription(""); // ??? should we call this here or in the card constructor
     
@@ -39,8 +44,49 @@ export default class App {
     
     new ImportTextFile(card);
 
+    console.log("--in addCard, at end, card is: --")
+    console.log(card);
+    console.log("LOCALLY STORED: ");
+    this.saveCardToLocal(card);
+    console.log(window.localStorage.getItem('cards'));
+    // window.localStorage.setItem('card', JSON.stringify(card));
+    // console.log(window.localStorage.getItem('card'));
+    // this.displayCards(cards);
     return card;
   }
 
-  
+  saveCardToLocal(card) {
+    let cards = JSON.parse(window.localStorage.getItem('cards')) || [];  /* get cards that are already stored */
+    const existingCardIndex = cards.findIndex(c => c.id === card.id); /* see if the card alr exists */
+    
+    if (existingCardIndex !== -1) {
+      cards[existingCardIndex] = card;
+    } 
+    else {
+      cards.push(card);
+    }
+    window.localStorage.setItem('cards', JSON.stringify(cards));
+  }
+
+  displayCards(cards) {
+    let cols = {};
+    console.log("cols");
+    console.log(cols);
+
+    cards.forEach(card => {
+      // console.log("card.col");
+      // console.log(card.col);
+      // console.log("BEFORE: cols[card.col]");
+      // console.log(cols[card.col]);
+      // console.log("!cols[card.col]");
+      // console.log(!cols[card.col]);
+      if (!cols[card.col]) {
+        cols[card.col] = [];
+      }
+      cols[card.col].push(card);
+      console.log("AFTER: cols[card.col]");
+      console.log(cols[card.col]);
+    })
+
+  }
 }
