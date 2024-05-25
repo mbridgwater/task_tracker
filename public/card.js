@@ -11,8 +11,8 @@ export default class Card {
 
     clone.className = "card"; // ! need to fix this for the className
     clone.style.backgroundColor = color;
-    console.log("clone");
-    console.log(clone);
+    // console.log("clone");
+    // console.log(clone);
     // const rgb_color = window.getComputedStyle(clone);
     // const rgb_color = rgb(from color 255 255 255)
     // if ((red*0.299 + green*0.587 + blue*0.114) > 186) use #000000 else use #ffffff;
@@ -20,18 +20,20 @@ export default class Card {
     // console.log(rgb_color);
     // console.log(`rgb_color: ${rgb_color}, color: ${color}`);
     // const hexColor = this.getHexColor(rgb_color);
+    // console.log("COLOR IS")
+    // console.log(color);
     const hexColor = colorNameToHex(color); // takes a hex color or predefined css color and converts to hex
     /* detect how dark the color is */
     const r = parseInt(hexColor.substr(1,2), 16);
     const g = parseInt(hexColor.substr(3,2), 16);
     const b = parseInt(hexColor.substr(5,2), 16);
-    console.log(`r=${r}. g=${g}, b=${b}`);
+    // console.log(`r=${r}. g=${g}, b=${b}`);
 
     if ((r*0.299 + g*0.587 + b*0.114) <= 128) {   // source: https://en.wikipedia.org/wiki/Relative_luminance
       // clone.className = "card white-color";  // don't do this way bc makes things difficult/buggy later when resetting class names
       clone.style.color = "white";
       const imgList = clone.getElementsByTagName("img");
-      console.log("imgList is ", imgList)
+      // console.log("imgList is ", imgList)
       for (let i = 0; i < imgList.length; i++) {
         clone.getElementsByTagName("img")[i].className = "white-filter";
       }

@@ -8,14 +8,14 @@ export default class LightDarkMode {
 
 
     const darkLightModeButton = document.querySelector("[data-theme-toggle]");
-    console.log("darkLightModeButton")
-    console.log(darkLightModeButton);
+    // console.log("darkLightModeButton")
+    // console.log(darkLightModeButton);
     const darkLightModeButtonImg = darkLightModeButton.getElementsByTagName("img")[0];
     darkLightModeButton.addEventListener("click", () => {
       const newTheme = currentThemeSetting === "dark" ? "light" : "dark";
       // update the button text
-      const newCta = newTheme === "dark" ? "icons/dark-mode.svg" : "icons/light-mode.svg";
-      darkLightModeButtonImg.src = newCta;  
+      const newSvg = newTheme === "light" ? "icons/dark-mode.svg" : "icons/light-mode.svg";
+      darkLightModeButtonImg.src = newSvg;  
       // use an aria-label if you are omitting text on the button and using sun/moon icons, for example
       darkLightModeButtonImg.setAttribute("aria-label", newTheme);
       // update theme attribute on HTML to switch theme in CSS

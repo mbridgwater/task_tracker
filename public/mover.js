@@ -4,7 +4,9 @@ const MOVE_HERE_TEXT = "— Move here —";
 export default class Mover {
   constructor() {
     // ??? confused what is supposed to go in here/what this class rly represents ()
-
+    // maybe one thing i could do is in card.js rather than calling this.mover.startMoving(this), i should 
+    // do new Mover(card); and then move most of the stuff from startMoving into the constructor
+    // in that case --> what would startMoving have?`
   }
 
   /* startMoving(card) makes the -move here- button pop up and preps a card to be moved */
@@ -47,5 +49,4 @@ export default class Mover {
       moveHereButtons[0].remove();
     }
   }
-
 }

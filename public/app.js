@@ -19,6 +19,10 @@ export default class App {
 
     document.getElementById("addCard").addEventListener("submit", addCardEvent);  // handle it as a form submit, not a button click for validation reasons
 
+    // const card1Content = localStorage.setItem('itemName','stringContent');
+    console.log("this IS: ");
+    console.log(this);
+
   }
 
   /* addCard adds a new card to the task board by creating the card object and then calling card member functions */
