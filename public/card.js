@@ -4,7 +4,6 @@ import colorNameToHex from "./getColorHex.js"
 
 export default class Card {
   constructor(title, color, col, description, id, position) {
-    console.log("----entering Card Constructor----");
     const template_obj = document.getElementsByClassName("template card");
     let clone = template_obj[0].cloneNode(true); // If true, then the node and its whole subtree, including text that may be in child Text nodes, is also copied.
 
@@ -15,13 +14,10 @@ export default class Card {
     const r = parseInt(hexColor.substr(1,2), 16);
     const g = parseInt(hexColor.substr(3,2), 16);
     const b = parseInt(hexColor.substr(5,2), 16);
-    // console.log(`r=${r}. g=${g}, b=${b}`);
 
     if ((r*0.299 + g*0.587 + b*0.114) <= 128) {   // source: https://en.wikipedia.org/wiki/Relative_luminance
-      // clone.className = "card white-color";  // don't do this way bc makes things difficult/buggy later when resetting class names
       clone.style.color = "white";
       const imgList = clone.getElementsByTagName("img");
-      // console.log("imgList is ", imgList)
       for (let i = 0; i < imgList.length; i++) {
         clone.getElementsByTagName("img")[i].className = "white-filter";
       }
@@ -36,37 +32,12 @@ export default class Card {
     this.description = description;
     this.position = position;
     this.setDescription(description);
-    // if(!this.description){  // no this.description means card has not been 
-    //   // console.log("!this.description", !this.description)
-    //   this.setDescription(""); // ??? should we call this here or in the card constructor
-    // }
-    // else {
-    //   // NEVER GONNA GO IN HERE
-    //   // ! delete this probs
-    //   this.setDescription(this.description); // ??? should we call this here or in the card constructor
-    //   // this.updateLocalStorage(this);
-    // }
     
 
     // get card buttons
     const editButton = this.htmlClone.getElementsByClassName("edit")[0];
     const startMoveButton = this.htmlClone.getElementsByClassName("startMove")[0];
-    // const deleteButton = this.htmlClone.getElementsByClassName("delete")[0];
     
-
-    // const deleteCard = () => {   // ?? is there a way to make this a member function that would be better? Are all event listeners & handlers supposed to be in constructor (seems cluttered)? 
-    //         /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
-    //   console.log("----entering deleteCard----");
-    //   this.mover.stopMoving();  // when delete a card, don't want to be moving
-    //   this.htmlClone.remove();
-    //   let cards = JSON.parse(window.localStorage.getItem('cards')) || [];
-    //   const existingCardIndex = cards.findIndex(c => c.id === this.id); /* see if the card alr exists */
-    //   cards.splice(existingCardIndex, 1);  // to remove card from cards
-    //   window.localStorage.setItem('cards', JSON.stringify(cards));
-
-    //   delete this;
-    // }
-
     let textArea = this.htmlClone.getElementsByTagName("textarea")[0];
 
     const fillDescription = () => { /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
@@ -76,29 +47,21 @@ export default class Card {
       this.htmlClone.getElementsByClassName("description hidden")[0].className = "description";
     }
 
-    // const dragCard = (event) => {
-    //   console.log("DRAGGING");
-    // }
 
     editButton.addEventListener("click", () => { this.editCard(textArea); }); // this a good way to set this up? /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
     textArea.addEventListener("blur", fillDescription);
     // deleteButton.addEventListener("click", deleteCard); // ??? what is the benefit to having this as a member fxn like above or not like here
     startMoveButton.addEventListener("click", () => { this.mover.startMoving(this); });  // ??? why does it strike thru event when i start writing it? is this method deprecated?
     // ! REMOVE ALL this.mover instances
-    /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it ^^ */
-    // this.htmlClone.addEventListener("dragstart", dragCard);
-    // console.log(this);
   }
 
   addToCol(colElem, mover) {
     colElem.appendChild(this.htmlClone);
-    this.mover = mover;   // ! storing for later use
+    this.mover = mover;
 
 
     const deleteButton = this.htmlClone.getElementsByClassName("delete")[0];
     const deleteCard = () => {   // ?? is there a way to make this a member function that would be better? Are all event listeners & handlers supposed to be in constructor (seems cluttered)? 
-        /* ! ??? do i need to specify event here even if im not using it? linter yelled at me when i had it */
-      console.log("----entering deleteCard----");
       mover.stopMoving();  // when delete a card, don't want to be moving
       this.htmlClone.remove();
       let cards = JSON.parse(window.localStorage.getItem('cards')) || [];
@@ -162,21 +125,15 @@ export default class Card {
 
   updateLocalStorageDescription(card) {
     /* THIS IS ONLY FOR UPDATING THE CARD DESCRIPTION */
-    console.log("----entering updateLocalStorage(card) within card.js----");
     let cards = JSON.parse(window.localStorage.getItem('cards')) || [];  /* get cards that are already stored, shouldn't need || [] bc for stopMoving to be called, some cards must exist, but can add it as safegaurd */
     const existingCardIndex = cards.findIndex(c => c.id === card.id); /* see if the card alr exists */
-    console.log(card);
-    console.log("CARDS - LOOK HERE", cards);
 
     if (existingCardIndex !== -1) { 
       cards[existingCardIndex].description = card.description;  // so that this makes the update for the description
-      // cards[existingCardIndex].col = this.card.col;
-      // console.log("cards[existingCardIndex].col", cards[existingCardIndex].col);
     } 
     else {
       // WE SHOULD NEVER GO INTO THIS
-      console.log("HERE? THIS IS A PROBLEM, YOU SHOULD NOT BE ENTERING THIS!!!!!!")
-      // cards.push(card);
+      // console.log("HERE? THIS IS A PROBLEM, YOU SHOULD NOT BE ENTERING THIS!!!!!!")
     }
     window.localStorage.setItem('cards', JSON.stringify(cards));
   }

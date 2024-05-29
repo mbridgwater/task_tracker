@@ -1,3 +1,8 @@
+/* This file was created with the help of chatgpt to reduce time to write the switch statement
+Although using AI is usually not acceptable, it felt reasonable here since it is not used to 
+assist in coding logic, but rather write the repetitive cases to save time. Further, this is 
+not an essential part of my app, but rather mainly used with testing CSS predefined colors */
+
 export default function colorNameToHex(colorName) {
     if (colorName.charAt(0) === "#") {
         return colorName;
