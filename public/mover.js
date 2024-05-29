@@ -3,6 +3,7 @@ const MOVE_HERE_TEXT = "— Move here —";
 
 export default class Mover {
   constructor() {
+    this.currentlyMoving = false;
     // ??? confused what is supposed to go in here/what this class rly represents ()
     // maybe one thing i could do is in card.js rather than calling this.mover.startMoving(this), i should 
     // do new Mover(card); and then move most of the stuff from startMoving into the constructor
@@ -11,31 +12,39 @@ export default class Mover {
 
   /* startMoving(card) makes the -move here- button pop up and preps a card to be moved */
   startMoving(card) {
-    this.stopMoving();
-    card.htmlClone.className = "moving";  // give the card the CSS class moving
-    const moveButton = document.createElement("button");
-    moveButton.textContent = MOVE_HERE_TEXT;
-    moveButton.className = "moveHere";
-    
-    const colTitles = document.getElementsByClassName("columnTitle");
-    const cards = document.getElementsByTagName("article");
+    if (!this.currentlyMoving) {
+      this.currentlyMoving = true;
+      card.htmlClone.className = "moving";  // give the card the CSS class moving
+      const moveButton = document.createElement("button");
+      moveButton.textContent = MOVE_HERE_TEXT;
+      moveButton.className = "moveHere";
+      
+      const colTitles = document.getElementsByClassName("columnTitle");
+      const cards = document.getElementsByTagName("article");
 
-    for(let col = 0; col < colTitles.length; col++) {
+      for(let col = 0; col < colTitles.length; col++) {
+          let clone = moveButton.cloneNode(true);
+          clone.addEventListener("click", (event) => { this.stopMoving(event); });
+          colTitles[col].after(clone);
+          // ??? what is the benefit to having this as a member fxn like above or not like here
+      }
+      for(let i = 0; i < cards.length - 1; i++) { // -1 bc this includes the template 
         let clone = moveButton.cloneNode(true);
-        clone.addEventListener("click", (event) => { this.stopMoving(event); });
-        colTitles[col].after(clone);
+        clone.addEventListener("click", (event) => { this.stopMoving(event); });  // ??? .bind(this) maybe so that this refers to mover obj??? also it says to bind in constructor but i didnt do that...
+        cards[i].after(clone);
         // ??? what is the benefit to having this as a member fxn like above or not like here
+      }
     }
-    for(let i = 0; i < cards.length - 1; i++) { // -1 bc this includes the template 
-      let clone = moveButton.cloneNode(true);
-      clone.addEventListener("click", (event) => { this.stopMoving(event); });  // ??? .bind(this) maybe so that this refers to mover obj??? also it says to bind in constructor but i didnt do that...
-      cards[i].after(clone);
-      // ??? what is the benefit to having this as a member fxn like above or not like here
+    else {
+      this.stopMoving();
     }
   }
 
   /* stopMoving alters the DOM and moves the selected card to the right stop or just cancels the move altogther */
   stopMoving(event) {
+    this.currentlyMoving = false;
+    console.log("entering stopMoving");
+    console.log("event: ", event);
     let currCard = document.querySelector("article.moving");
     let originalColumn = "";
     let column = "";
@@ -48,8 +57,8 @@ export default class Mover {
         originalColumn = currCard.parentElement.id;
       }
       
-      document.querySelector("article.moving")?.classList.remove("moving"); // '?' for if null
-      currCard?.classList.add("card"); // '?' for if null
+      // document.querySelector("article.moving")?.classList.remove("moving"); // '?' for if null
+      // currCard?.classList.add("card"); // '?' for if null
       event.currentTarget.after(currCard);  // need something here for if card us null? or will it not enter it in that case?
       // make the column update with the column id marker
       /* save update to local storage */
@@ -61,8 +70,11 @@ export default class Mover {
     const moveHereButtons = document.getElementsByClassName("moveHere");
     const len = moveHereButtons.length;
     for(let i = 0; i < len; i++) { 
+      // console.log("entering this?")
       moveHereButtons[0].remove();
     }
+    currCard?.classList.remove("moving");
+    currCard?.classList.add("card");
   }
 
   updateLocalStorageColPosition(card, newColumn, prevSiblingId, originalColumn) {
