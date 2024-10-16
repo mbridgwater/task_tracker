@@ -1,6 +1,5 @@
 **Notes**
 
-Lauren "Missy" Bridgwater 
 Note: Removed some functionality that was committed previously.
 
 **Running**
